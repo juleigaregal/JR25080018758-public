@@ -1,0 +1,57 @@
+1.An algorithm that asks a user to enter a positive number repeatedly until the user enters a zero value, then determines and outputs the largest of the numbers that were entered.
+
+# Need to hold the inputs of the user, so that eventually it can find the maximum value that was entered from all the inputs
+# Once the user enters 0, find the largest integer in the input data
+# need a way to store all the inputs from the user
+# find the maximum value that user entered
+
+user enters integer
+set x = [] define a variable that can store all the values that the user enters
+prompt user to input positive number
+while input is positive
+prompt user to enter number
+store numbers in X
+if input = 0
+find max value in array[x]
+
+
+2.An algorithm that requests a user to input their name and then stores their name in a variable called first_name. Subsequently, the algorithm should print out first_name along with the phrase “Hello, World”.
+
+set variable first_name
+request user to input first_name
+print first_name + 'Hello World'
+
+3.An algorithm that reads an arbitrary number of integers and then returns their arithmetic average.
+
+Read in arbitrary integers (assuming data is stored in a file,  read in this file)
+x = arbitrary_integers (stores the data in a variable)
+Calculate Sum(x)/(Count number of arbitrary integers in x)
+
+4.An algorithm that reads a grocery list and prints out the products (in alphabetical order) that are still left to buy.
+
+# Would need the user to input each time they purchase a product from the list
+# Would need the data containing the entire grocery list
+# Once user inputs item from the list, the algorithm would need to compare the inputs in the list against the grocery list
+# print out the missing items in the list in alphabetical order
+
+grocery_list = [Apple, Flour, Sugar, Tea, Coffee, Milk]
+item_purchased = []
+Prompt user to enter item_purchased
+Compare grocery_list to item_purchased
+If items in grocery_list matches items_purchased
+then 'complete'
+Else 
+Set Remaining_items = [grocery_list] - [item_purchased]
+Print Remaining_items sort alphabetical order ascending
+
+5.
+Ask user to enter two numbers
+set  x = user_input
+set y = user_input
+Create a variable S
+Set S = x+y (Add x and y and store variable in S)
+Set A = S/2 (Divide S by 2 and store variable in A)
+Set P = x*y (multiply x and y and store value in variable P)
+Print S, A, P
+
+
