@@ -10,12 +10,13 @@ from statistics import mean, median
 
 stored_numbers = []
 total_numbers = 0
-for i in range(0,5):
+#Iterate through the inputs, store the data in a list and add each value
+for i in range(0,10):
     items = float(input("Enter a float number:"))
     stored_numbers.append(items)
     total_numbers+=items
     
-
+#print the output
 print(f"The total is {total_numbers}")
 print(f"The minimum is {min(stored_numbers)}")
 print(f"The maximum is {max(stored_numbers)}")
