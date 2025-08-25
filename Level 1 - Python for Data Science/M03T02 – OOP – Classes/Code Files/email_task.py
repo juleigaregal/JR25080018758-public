@@ -45,14 +45,20 @@ email_1.has_been_read = True
 
 # --- Functions --- #
 # Build out the required functions for your program.
+emailer_data=  [
+    ['juleiga.regal@gmail.com', 'Welcome To HyperionDev', 'Python for Data Science', False],
+    ['juleiga.regal_2_@gmail.com', 'Great Work on bootcamp', 'Cool stuff you can do with Python', False],
+    ['juleiga.regal_3_@gmail.com', 'Great Marks', 'Machine Learning for Beginners', True]]
+
+
 
   # Create 3 sample emails and add them to the inbox list.
 def populate_inbox():
-    for i in range(3):
-        i = Email('juleiga.regal_'+str(i)+'_@gmail.com', 'difficult task_'+str(i), 'python_'+str(i), False)
-        parts= [i.email_address, i.subject_line, i.email_content, i.has_been_read]
-        inbox = parts
-        print (inbox)       
+    for i, (x,y,z,p) in enumerate(emailer_data):
+            i = Email(x, y, z, p)
+            parts= [i.email_address, i.subject_line, i.email_content, i.has_been_read]
+            inbox = parts
+            print (inbox)       
     pass
 
 populate_inbox()
