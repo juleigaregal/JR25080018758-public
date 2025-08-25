@@ -29,24 +29,19 @@ class Email:
         
     def mark_as_read(self):
         has_been_read = False
+    
+   
         
 # Initialise the instance variables for each email.
-email_address_1 = Email('juleiga.regal@gmail')
-subject_line_1 = Email('this is a test')
-email_content_1 = Email('python')
-has_been_read = Email(False)
+email_1 = Email('juleiga.regal@gmail.com', 'difficult task', 'python', False)
 
+print(email_1.email_address)
 
 # Create the 'mark_as_read()' method to change the 'has_been_read'
-def mark_as_read(self):
-    if has_been_read == False:
-        print('email has not been read')
-    else:
-        print("email has been read")
+
 
 inbox =[]
 # instance variable for a specific object from False to True.
-print(email_address_1)
 
 # --- Functions --- #
 # Build out the required functions for your program.
