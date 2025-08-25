@@ -30,26 +30,33 @@ class Email:
     def mark_as_read(self):
         has_been_read = False
     
-   
-        
+      
 # Initialise the instance variables for each email.
 email_1 = Email('juleiga.regal@gmail.com', 'difficult task', 'python', False)
 
-print(email_1.email_address)
+#print(email_1.email_address)
 
 # Create the 'mark_as_read()' method to change the 'has_been_read'
 
 
 inbox =[]
 # instance variable for a specific object from False to True.
+email_1.has_been_read = True
 
 # --- Functions --- #
 # Build out the required functions for your program.
 
-
+  # Create 3 sample emails and add them to the inbox list.
 def populate_inbox():
-    # Create 3 sample emails and add them to the inbox list.
+    for i in range(3):
+        i = Email('juleiga.regal_'+str(i)+'_@gmail.com', 'difficult task_'+str(i), 'python_'+str(i), False)
+        parts= [i.email_address, i.subject_line, i.email_content, i.has_been_read]
+        inbox = parts
+        print (inbox)       
     pass
+
+populate_inbox()
+
 
 
 def list_emails():
