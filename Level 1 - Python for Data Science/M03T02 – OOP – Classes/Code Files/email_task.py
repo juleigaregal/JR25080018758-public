@@ -65,15 +65,18 @@ def populate_inbox():
 
 
 inbox = populate_inbox()
-print(inbox)
+print(inbox[1][1])
 
 
 def list_emails():
+    for i in range(0,len(inbox)):
+        print(i,inbox[i][1])
     # Create a function that prints each email's subject line
     # alongside its corresponding index number,
     # regardless of whether the email has been read.
     pass
 
+list_emails()
 
 def read_email(index):
     # Create a function that displays the email_address, subject_line,
