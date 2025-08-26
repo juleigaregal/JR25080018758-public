@@ -28,7 +28,7 @@ class Email:
         self.has_been_read = has_been_read
         
     def mark_as_read(self):
-        has_been_read = False
+        self.has_been_read = False
     
       
 # Initialise the instance variables for each email.
@@ -50,7 +50,7 @@ email_1.has_been_read = True
 emailer_data=  [
     ['juleiga.regal@gmail.com', 'Welcome To HyperionDev', 'Python for Data Science', False],
     ['juleiga.regal_2_@gmail.com', 'Great Work on bootcamp', 'Cool stuff you can do with Python', False],
-    ['juleiga.regal_3_@gmail.com', 'Great Marks', 'Machine Learning for Beginners', True]
+    ['juleiga.regal_3_@gmail.com', 'Great Marks', 'Machine Learning for Beginners', False]
     ]
 
   # Create 3 sample emails and add them to the inbox list.
@@ -76,14 +76,21 @@ def list_emails():
     # regardless of whether the email has been read.
     pass
 
-list_emails()
 
 def read_email(index):
+    for i in range(0,len(inbox)):
+        print(inbox[i][:-1])
+        has_been_read =True
+        mark_as_read(self.has_been_read)
+       
     # Create a function that displays the email_address, subject_line,
     # and email_content attributes for the selected email.
     # After displaying these details, use the 'mark_as_read()' method
     # to set its 'has_been_read' instance variable to True.
     pass
+
+read_email(0)
+print(inbox)
 
 
 def view_unread_emails():
