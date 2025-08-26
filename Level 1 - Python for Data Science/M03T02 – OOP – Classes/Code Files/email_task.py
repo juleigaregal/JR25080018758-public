@@ -28,7 +28,8 @@ class Email:
         self.has_been_read = has_been_read
         
     def mark_as_read(self):
-        self.has_been_read = False
+        has_been_read = True
+       
     
       
 # Initialise the instance variables for each email.
@@ -47,7 +48,7 @@ email_1.has_been_read = True
 # Build out the required functions for your program.
 
 # list to populate the inbox function
-emailer_data=  [
+sample_emails =  [
     ['juleiga.regal@gmail.com', 'Welcome To HyperionDev', 'Python for Data Science', False],
     ['juleiga.regal_2_@gmail.com', 'Great Work on bootcamp', 'Cool stuff you can do with Python', False],
     ['juleiga.regal_3_@gmail.com', 'Great Marks', 'Machine Learning for Beginners', False]
@@ -56,21 +57,32 @@ emailer_data=  [
   # Create 3 sample emails and add them to the inbox list.
 def populate_inbox():
     inbox = []
-    for i, (x,y,z,p) in enumerate(emailer_data):
-            i = Email(x, y, z, p)
-            parts =[i.email_address, i.subject_line, i.email_content, i.has_been_read]
-            inbox.append(parts)
-    return inbox    
+    for idx, (x, y, z, p) in enumerate(sample_emails):
+        emails = Email(x, y, z, p)  # do not overwrite idx
+        inbox.append(emails)        # store the object itself
+
+    return inbox
+ 
     pass
 
 
-inbox = populate_inbox()
-print(inbox[1][1])
+#inboxes = populate_inbox()
+#print(inboxes[0])
+#selected_email = inboxes[0]
+#print(selected_email.email_address)
+#print(selected_email.subject_line)
+#print(selected_email.email_content)
+
+# Mark it as read
+#selected_email.mark_as_read()
+#print(selected_email.has_been_read)  # Should now be True
 
 
 def list_emails():
-    for i in range(0,len(inbox)):
-        print(i,inbox[i][1])
+    email_list =[]
+    for i, email in enumerate(inbox):
+        email_list.append((i,email.subject_line))
+    return email_list
     # Create a function that prints each email's subject line
     # alongside its corresponding index number,
     # regardless of whether the email has been read.
@@ -78,10 +90,13 @@ def list_emails():
 
 
 def read_email(index):
-    for i in range(0,len(inbox)):
-        print(inbox[i][:-1])
-        has_been_read =True
-        mark_as_read(self.has_been_read)
+    email = inbox[index]      # this is now an Email object
+    print(email.email_address)
+    print(email.subject_line)
+    print(email.email_content)
+    email.mark_as_read()      # changes has_been_read to True
+
+        
        
     # Create a function that displays the email_address, subject_line,
     # and email_content attributes for the selected email.
@@ -89,18 +104,21 @@ def read_email(index):
     # to set its 'has_been_read' instance variable to True.
     pass
 
-read_email(0)
-print(inbox)
 
 
-def view_unread_emails():
+def view_unread_emails(index):
     # Create a function that displays all unread Email object subject lines
     # along with their corresponding index numbers.
     # The list of displayed emails should update as emails are read.
+    email = inbox[index]
+    print(email.email_address)
+    print(email.has_been_read)
     pass
 
 
 # --- Lists --- #
+inbox = populate_inbox()
+
 # Initialise an empty list outside the class to store the email objects.
 
 # --- Email Program --- #
@@ -123,15 +141,25 @@ while True:
     )
 
     if user_choice == 1:
-        # Add logic here to read an email
-        pass
+        # Show email list
+        emails = list_emails()
+        for i, subject in emails:
+            print(f"{i}: {subject}")
+        index = int(input("Enter the index of the email to read: "))
+        read_email(index)
 
     elif user_choice == 2:
-        # Add logic here to view unread emails
+        emails = list_emails()
+        for i, read_or_not in emails:
+            print(f"{i}: {read_or_not}")
+        index = int(input("Enter the index of the unread email: "))
+        view_unread_emails(index)
         pass
 
     elif user_choice == 3:
         # Add logic here to quit application.
+        print("Goodbye")
+        break
         pass
 
     else:
