@@ -409,6 +409,74 @@ def generate_task_report(filename="task_overview.txt"):
         print(f"Error writing to '{filename}': {e}")
         
         
+
+def calculate_user_overview():
+    """Return user statistics as a list of strings."""
+    today = date.today()
+    total_users = len(users)
+    total_tasks = len(task_data)
+    lines = [
+        f"Total number of users: {total_users}",
+        f"Total number of tasks: {total_tasks}",
+        "",
+        "User-specific statistics:"
+    ]
+    
+    for user in users:
+        username = user["username"]
+        user_tasks = [task for task in task_data if task[1].strip().lower() == username.lower()]
+        total_user_tasks = len(user_tasks)
+        percent_total_tasks = (total_user_tasks / total_tasks * 100) if total_tasks else 0
+
+        completed_tasks = [t for t in user_tasks if t[6].strip().lower() == "yes"]
+        uncompleted_tasks = [t for t in user_tasks if t[6].strip().lower() == "no"]
+        overdue_tasks = [
+            t for t in uncompleted_tasks
+            if len(t) == 7 and parse_date(t[5]) is not None and parse_date(t[5]) < today
+        ]
+
+        percent_completed = (len(completed_tasks) / total_user_tasks * 100) if total_user_tasks else 0
+        percent_uncompleted = (len(uncompleted_tasks) / total_user_tasks * 100) if total_user_tasks else 0
+        percent_overdue = (len(overdue_tasks) / total_user_tasks * 100) if total_user_tasks else 0
+
+        lines.append(f"User: {username}")
+        lines.append(f"  Total tasks assigned: {total_user_tasks}")
+        lines.append(f"  % of total tasks: {percent_total_tasks:.2f}%")
+        lines.append(f"  % completed: {percent_completed:.2f}%")
+        lines.append(f"  % uncompleted: {percent_uncompleted:.2f}%")
+        lines.append(f"  % overdue: {percent_overdue:.2f}%")
+        lines.append("")  # blank line for readability
+
+    return lines
+
+
+def generate_user_report(filename="user_overview.txt"):
+    """Write user statistics to a file, creating it if missing."""
+    lines = calculate_user_overview()
+    try:
+        with open(filename, "w") as f:
+            for line in lines:
+                f.write(line + "\n")
+        print(f"User report successfully written to '{filename}'.")
+    except Exception as e:
+        print(f"Error writing to '{filename}': {e}")
+
+
+def display_user_overview(filename="user_overview.txt"):
+    """Display user statistics on screen. Generate report if file missing."""
+    try:
+        with open(filename, "r") as f:
+            lines = [line.strip() for line in f.readlines()]
+        print("\nUser Overview:")
+        for line in lines:
+            print(line)
+    except FileNotFoundError:
+        print(f"File '{filename}' not found. Generating report...")
+        generate_user_report(filename)
+        display_user_overview(filename)
+
+        
+        
 # ==== Main menu loop ====
 while True:
     if matched_user["username"].strip().lower() == "admin":
@@ -447,11 +515,15 @@ e - exit
         view_completed()
     elif menu == 'ds':
         display_task_overview()
+        display_user_overview()
     elif menu == 'del':
         delete_task()
     elif menu == 'gr':
         generate_task_report()
-        print("Report has been generated")
+        print("Task Report has been generated")
+        generate_user_report()
+        print("User Overview Report has been generated")
+
         
     elif menu == 'e':
         print('Goodbye!!!')
