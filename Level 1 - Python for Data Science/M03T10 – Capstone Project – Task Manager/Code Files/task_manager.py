@@ -1,9 +1,10 @@
 # ===== Importing external modules =======
-"""Task Management 
+"""
+Task Management
 This script allows user registration, login, adding tasks, and viewing tasks.
 It supports viewing all tasks or only tasks assigned to the logged-in user.
-In addition, only admins are allowed to delete tasks or generate reports. 
-Admin sees a different menu to non-admin
+In addition, only admins are allowed to delete tasks or generate reports.
+Admin sees a different menu to non-admin.
 """
 
 import sys
@@ -36,6 +37,7 @@ with open("tasks.txt", "w") as file:
         task_data.append(partrec)
         file.write(",".join(partrec) + "\n")
 
+
 # ==== Read and clean users file ====
 try:
     with open("user.txt", "r") as file:
@@ -50,20 +52,24 @@ with open("user.txt", "w") as file:
         if len(part) == 2:
             file.write(",".join(part) + "\n")
 
+
 # ==== Create users dictionary ====
 users = []
 with open("user.txt", "r") as file:
     for i in file:
         parts = i.strip().split(",")
-        users.append({"username": parts[0].strip(), "password": parts[1].strip()})
+        users.append({"username": parts[0].strip(),
+                      "password": parts[1].strip()})
+
 
 # ==== User login ====
-"""Creates a user and checks
- if the user already exists
- , if they do, user needs to try again"""
- 
+"""
+Creates a user and checks if the user already exists.
+If they do, user needs to try again.
+"""
+
 while True:
-    user_name = input("Enter username:").strip()
+    user_name = input("Enter username: ").strip()
     matched_user = None
 
     for user in users:
@@ -76,7 +82,7 @@ while True:
         continue
 
     while True:
-        user_password = input("Enter password:").strip()
+        user_password = input("Enter password: ").strip()
         if matched_user["password"] == user_password:
             print("You are logged in")
             break
@@ -87,16 +93,19 @@ while True:
 
 # ==== Define functions ====
 
+
 def print_task(task, idx=None):
     """
     Prints tasks in a readable format.
 
     Parameters:
     - task (list): A task record with 7 fields:
-      [task_number, assigned_to, task_title, task_description, date_assigned, due_date, task_complete]
+      [task_number, assigned_to, task_title, task_description,
+       date_assigned, due_date, task_complete]
     - idx (int, optional): Menu number or index for display purposes.
     """
-    task_number, assigned_to, task_title, task_description, date_assigned, due_date, task_complete = [x.strip() for x in task]
+    task_number, assigned_to, task_title, task_description, \
+        date_assigned, due_date, task_complete = [x.strip() for x in task]
 
     print("-" * 50)
     if idx is not None:
@@ -113,42 +122,42 @@ def print_task(task, idx=None):
 
 def table_tasks(tasks):
     """
-   Prints out a table of tasks in a readable format.
+    Prints out a table of tasks in a readable format.
 
-   This function can be used in multiple contexts:
-   - Admin can view tasks when deciding which task to delete.
-   - Non-admin users can view their own tasks when editing or completing tasks.
+    Parameters:
+    - tasks (list): A list of task records. Each task should have 7 fields.
 
-   Parameters:
-   - tasks (list): A list of task records. Each task should have 7 fields:
-     [task_number, assigned_to, task_title, task_description, date_assigned, due_date, task_complete]
-
-   The function automatically wraps long descriptions to fit nicely in the table.
-   """
+    This function wraps long descriptions to fit nicely in the table.
+    """
     rows = []
-    for idx, task in enumerate(tasks, start =1):
+    for idx, task in enumerate(tasks, start=1):
         if len(task) != 7:
             print(f"Skipping malformed task: {task}")
             continue
 
-        task_number, assigned_to, task_title, task_description, date_assigned, due_date, task_complete = [x.strip() for x in task]
+        task_number, assigned_to, task_title, task_description, \
+            date_assigned, due_date, task_complete = [x.strip()
+                                                      for x in task]
 
-        # Only keep the columns you want
-        wrapped_assignedt_to = "\n".join(textwrap.wrap(assigned_to, width=5))
+        wrapped_assigned_to = "\n".join(textwrap.wrap(assigned_to, width=5))
         wrapped_desc = "\n".join(textwrap.wrap(task_description, width=30))
-        wrapped_task_completed = "\n".join(textwrap.wrap(task_complete, width=10))
-        rows.append([idx, task_number, wrapped_desc, wrapped_assignedt_to, date_assigned, due_date, wrapped_task_completed])
+        wrapped_task_completed = "\n".join(
+            textwrap.wrap(task_complete, width=10)
+        )
+        rows.append([
+            idx, task_number, wrapped_desc, wrapped_assigned_to,
+            date_assigned, due_date, wrapped_task_completed
+        ])
 
-    headers = ["Menu number","Task Number","Description", "assgigned_to","Date Assigned","Due Date","Completed?"]
+    headers = [
+        "Menu number", "Task Number", "Description", "Assigned To",
+        "Date Assigned", "Due Date", "Completed?"
+    ]
     print(tabulate(rows, headers=headers, tablefmt="grid"))
 
 
 def save_tasks_to_file(filename="tasks.txt"):
-    """Saves the current task_data list to tasks.txt.
-
-    Parameters:
-    - filename (str): Name of the file to save tasks to. Default is 'tasks.txt'."""
-
+    """Saves the current task_data list to tasks.txt."""
     with open(filename, "w") as f:
         for task in task_data:
             line = ", ".join(task) + "\n"
@@ -156,27 +165,25 @@ def save_tasks_to_file(filename="tasks.txt"):
 
 
 def reg_user():
-    """ 
-        Registers a new user.
-        Checks if the username already exists. 
-        If not, prompts for a password and confirmation.
-        Saves the new user to user.txt 
-        and adds to the in-memory users list.
-        
-     """
-    
-    new_username = input("Enter new username:").strip()
-    if any(user["username"].strip().lower() == new_username.lower() for user in users):
+    """
+    Registers a new user.
+    Checks if the username already exists.
+    Saves the new user to user.txt and updates in-memory list.
+    """
+    new_username = input("Enter new username: ").strip()
+    if any(user["username"].strip().lower() == new_username.lower()
+           for user in users):
         print("Username already exists. Try a different one.")
         return
 
     while True:
-        new_password = input("Enter new password:").strip()
-        confirm_password = input("Confirm password:").strip()
+        new_password = input("Enter new password: ").strip()
+        confirm_password = input("Confirm password: ").strip()
         if new_password == confirm_password:
             with open("user.txt", "a") as file:
                 file.write(f"{new_username},{confirm_password}\n")
-            users.append({"username": new_username, "password": confirm_password})
+            users.append({"username": new_username,
+                          "password": confirm_password})
             print("User has been successfully added")
             break
         else:
@@ -186,93 +193,76 @@ def reg_user():
 def add_task():
     """
     Adds a new task for a user.
-
-    Prompts for the username, task title, description, due date, and status.
-    Saves the new task to tasks.txt and adds it to the in-memory task_data list.
+    Saves to tasks.txt and adds to in-memory task_data list.
     """
-    task_status = 'no'
-    enter_username = input("Enter username for task:").strip().lower()
-    
-    if not any(u["username"].strip().lower() == enter_username for u in users):
+    task_status = "no"
+    enter_username = input("Enter username for task: ").strip().lower()
+
+    if not any(u["username"].strip().lower() == enter_username
+               for u in users):
         print("User does not exist")
         return
-    
+
     task_title = input("Enter Task: ").strip()
     task_description = input("Enter task description: ").strip()
-    
+
     while True:
-        task_due_date = input("Enter Due Date, example 2025-09-06: ").strip()
+        task_due_date = input("Enter Due Date (YYYY-MM-DD): ").strip()
         try:
             datetime.strptime(task_due_date, "%Y-%m-%d").date()
             break
         except ValueError:
-            print("Invalid date format. Please enter the date in YYYY-MM-DD format.")
-    
+            print("Invalid date format. Please use YYYY-MM-DD.")
+
     current_date = date.today()
     task_status_input = input("Enter task status yes/no: ").strip().lower()
-    if task_status_input == 'yes':
-        task_status = 'yes'
-    
-    # Calculate next task_number
+    if task_status_input == "yes":
+        task_status = "yes"
+
     if task_data:
         task_number = str(int(max(task_data, key=lambda t: int(t[0]))[0]) + 1)
     else:
         task_number = "1"
-    
+
     task_entry = [
-        task_number,
-        enter_username,
-        task_title,
-        task_description,
-        task_due_date,
-        current_date.isoformat(),
-        task_status
+        task_number, enter_username, task_title, task_description,
+        current_date.isoformat(), task_due_date, task_status
     ]
-    
+
     with open("tasks.txt", "a") as file:
         file.write(",".join(task_entry) + "\n")
     task_data.append(task_entry)
 
+
 def view_all():
-    """ 
-    This function allows admin and non-admin to view all tasks.
-    Prints out all tasks with details related to the task such as 
-    date assigned, due date, assigned to, and if the task
-    is completed or not.
-    
-    """
+    """Allows all users to view all tasks."""
     for task in task_data:
         if len(task) != 7:
             print(f"Skipping malformed task: {task}")
             continue
         print_task(task, idx=None)
-        
+
 
 def view_mine():
     """
-    Allows the user to view their tasks and manage them.
-    User can mark tasks as complete or edit the assignee and due date.
-    After changes are submitted, tasks.txt is updated.
-    
+    Allows the user to view and manage their tasks.
+    User can complete or edit tasks.
     """
-    my_tasks = [task for task in task_data if task[1].strip().lower() == matched_user["username"].lower()]
+    my_tasks = [task for task in task_data
+                if task[1].strip().lower() ==
+                matched_user["username"].lower()]
 
     if not my_tasks:
         print("You have no tasks assigned.")
         return
 
-    while True:  # loop so user can make multiple edits
+    while True:
         print("\nYour tasks:")
-        for idx, task in enumerate(my_tasks, start=1):
-            if len(task) != 7:
-                continue
-            #print_task(task, idx)
-
-        # Show table view
         table_tasks(my_tasks)
 
         try:
-            selection = int(input("\nEnter menu number to manage, or -1 to return: "))
+            selection = int(input("\nEnter menu number to manage, "
+                                  "or -1 to return: "))
         except ValueError:
             print("Invalid input.")
             continue
@@ -281,134 +271,139 @@ def view_mine():
             return
 
         if 1 <= selection <= len(my_tasks):
-            task = my_tasks[selection - 1]  # pick task by menu number
+            task = my_tasks[selection - 1]
             task_number = task[0]
 
             print(f"\nSelected Task ID: {task_number} → {task[2]}")
-            action = input("Do you want to (c)omplete or (e)dit this task? ").strip().lower()
+            action = input("Do you want to (c)omplete or (e)dit "
+                           "this task? ").strip().lower()
 
             if action == "c":
                 task[6] = "yes"
                 print("Task marked as complete.")
-                save_tasks_to_file()  # save changes immediately
+                save_tasks_to_file()
 
             elif action == "e":
                 if task[6].strip().lower() == "yes":
                     print("Task already complete. Cannot edit.")
                 else:
-                    new_user = input(f"Enter new username (or press Enter to keep '{task[1]}'): ").strip()
+                    new_user = input(f"Enter new username "
+                                     f"(or press Enter to keep '{task[1]}'): "
+                                     ).strip()
                     if new_user:
                         task[1] = new_user
 
-                    new_due = input(f"Enter new due date (or press Enter to keep '{task[5]}'): ").strip()
+                    new_due = input(f"Enter new due date "
+                                    f"(or press Enter to keep '{task[5]}'): "
+                                    ).strip()
                     if new_due:
                         task[5] = new_due
 
                     print("Task updated successfully.")
-                    save_tasks_to_file()  # save changes immediately
-
+                    save_tasks_to_file()
             else:
                 print("Invalid action. Please choose 'c' or 'e'.")
         else:
             print("Invalid selection.")
 
 
-        
-
 def view_completed():
-    """
-    allows users to view all their completed tasks
-
-    
-    """
+    """Allows users to view all their completed tasks."""
     for task in task_data:
         if len(task) != 7:
             print(f"Skipping malformed task: {task}")
             continue
 
-        task_number, assigned_to, task_title, task_description, date_assigned, due_date, task_complete = [x.strip() for x in task]
+        task_number, assigned_to, task_title, task_description, \
+            date_assigned, due_date, task_complete = [x.strip()
+                                                      for x in task]
         if task_complete.lower() == "yes":
             print("-" * 50)
             print(f"Task number:      {task_number}")
-            print(f"Task:            {task_title}")
-            print(f"Assigned to:     {assigned_to}")
-            print(f"Date assigned:   {date_assigned}")
-            print(f"Due date:        {due_date}")
-            print(f"Task Complete?   {task_complete}")
+            print(f"Task:             {task_title}")
+            print(f"Assigned to:      {assigned_to}")
+            print(f"Date assigned:    {date_assigned}")
+            print(f"Due date:         {due_date}")
+            print(f"Task Complete?    {task_complete}")
             print(f"Task description:\n  {task_description}")
             print("-" * 50)
 
+
 def delete_task():
-    """
-    Only the admin is allowed to delete tasks.
-    They can delete via a chosen task number
-    """
+    """Allows admin to delete a task by number."""
     global task_data
     table_tasks(task_data)
-    task_number_to_delete = input("Enter task number to be deleted: ").strip()
-    task_data = [task for task in task_data if task[0].strip() != task_number_to_delete]
+    task_number_to_delete = input("Enter task number to delete: ").strip()
+    task_data = [task for task in task_data
+                 if task[0].strip() != task_number_to_delete]
     save_tasks_to_file(filename="tasks.txt")
     print(f"Task {task_number_to_delete} has been deleted.")
-    
 
 
 def parse_date(due_str):
-    """Try multiple date formats and return a date object"""
-    for fmt in ("%Y-%m-%d", "%d %b %Y"):  # add more formats if needed
+    """Try multiple date formats and return a date object."""
+    for fmt in ("%Y-%m-%d", "%d %b %Y"):
         try:
             return datetime.strptime(due_str.strip(), fmt).date()
         except ValueError:
             continue
-    return None  # invalid date
+    return None
 
 
 def calculate_task_overview():
+    """Calculate task statistics and return as list of lines."""
     today = date.today()
-    completed_tasks = [task for task in task_data if task[6]=="yes"]
-    uncompleted_tasks = [task for task in task_data if task[6]=="no"]
+    completed_tasks = [task for task in task_data if task[6] == "yes"]
+    uncompleted_tasks = [task for task in task_data if task[6] == "no"]
     overdue_tasks = [
-    task for task in task_data
-    if len(task) == 7
-    and  parse_date(task[5]) is not None
-    and parse_date(task[5]) < today
-    and task[6].strip().lower() == "no"]
+        task for task in task_data
+        if len(task) == 7
+        and parse_date(task[5]) is not None
+        and parse_date(task[5]) < today
+        and task[6].strip().lower() == "no"
+    ]
     total_tasks = len(task_data)
     total_overdue_tasks = len(overdue_tasks)
-    percent_uncompleted_tasks = float(len(uncompleted_tasks)/total_tasks)*100.0
-    percent_overdue_tasks = float(total_overdue_tasks/total_tasks)*100.0
-    
+    percent_uncompleted = (len(uncompleted_tasks) / total_tasks * 100
+                           if total_tasks else 0)
+    percent_overdue = (total_overdue_tasks / total_tasks * 100
+                       if total_tasks else 0)
+
     lines = [
         f"Total number of tasks:               {total_tasks}",
         f"Total number of completed tasks:     {len(completed_tasks)}",
-        f"Total number of uncompleted tasks:  {len(uncompleted_tasks)}",
-        f"Total overdue tasks:                {total_overdue_tasks}",
-        f"% of uncompleted tasks:             {percent_uncompleted_tasks:.2f}%",
-        f"% of overdue tasks:                 {percent_overdue_tasks:.2f}%"
+        f"Total number of uncompleted tasks:   {len(uncompleted_tasks)}",
+        f"Total overdue tasks:                 {total_overdue_tasks}",
+        f"% of uncompleted tasks:              {percent_uncompleted:.2f}%",
+        f"% of overdue tasks:                  {percent_overdue:.2f}%"
     ]
-    
     return lines
- 
-    
-
-def display_task_overview():
-    """Display task statistics on screen"""
-    lines = calculate_task_overview()
-    for line in lines:
-        print(line)
 
 
 def generate_task_report(filename="task_overview.txt"):
-    """Write task statistics to a file"""
+    """Write task statistics to a file."""
     lines = calculate_task_overview()
+    with open(filename, "w") as f:
+        for line in lines:
+            f.write(line + "\n")
+
+
+def display_task_overview(filename="task_overview.txt"):
+    """
+    Display task statistics on screen.
+    Generate report if file is missing.
+    """
     try:
-        with open(filename, "w") as f:
-            for line in lines:
-                f.write(line + "\n")
-        print(f"Report successfully written to '{filename}'.")
-    except Exception as e:
-        print(f"Error writing to '{filename}': {e}")
-        
-        
+        with open(filename, "r") as f:
+            lines = [line.strip() for line in f.readlines()]
+        print("\nTask Overview:")
+        for line in lines:
+            print(line)
+    except FileNotFoundError:
+        print(f"File '{filename}' not found. Generating report...")
+        generate_task_report(filename)
+        display_task_overview(filename)
+
 
 def calculate_user_overview():
     """Return user statistics as a list of strings."""
@@ -421,49 +416,53 @@ def calculate_user_overview():
         "",
         "User-specific statistics:"
     ]
-    
+
     for user in users:
         username = user["username"]
-        user_tasks = [task for task in task_data if task[1].strip().lower() == username.lower()]
+        user_tasks = [task for task in task_data
+                      if task[1].strip().lower() == username.lower()]
         total_user_tasks = len(user_tasks)
-        percent_total_tasks = (total_user_tasks / total_tasks * 100) if total_tasks else 0
+        percent_total = (total_user_tasks / total_tasks * 100
+                         if total_tasks else 0)
 
-        completed_tasks = [t for t in user_tasks if t[6].strip().lower() == "yes"]
-        uncompleted_tasks = [t for t in user_tasks if t[6].strip().lower() == "no"]
+        completed_tasks = [t for t in user_tasks
+                           if t[6].strip().lower() == "yes"]
+        uncompleted_tasks = [t for t in user_tasks
+                             if t[6].strip().lower() == "no"]
         overdue_tasks = [
             t for t in uncompleted_tasks
-            if len(t) == 7 and parse_date(t[5]) is not None and parse_date(t[5]) < today
+            if len(t) == 7 and parse_date(t[5]) is not None
+            and parse_date(t[5]) < today
         ]
 
-        percent_completed = (len(completed_tasks) / total_user_tasks * 100) if total_user_tasks else 0
-        percent_uncompleted = (len(uncompleted_tasks) / total_user_tasks * 100) if total_user_tasks else 0
-        percent_overdue = (len(overdue_tasks) / total_user_tasks * 100) if total_user_tasks else 0
+        percent_completed = (len(completed_tasks) / total_user_tasks * 100
+                             if total_user_tasks else 0)
+        percent_uncompleted = (len(uncompleted_tasks) / total_user_tasks * 100
+                               if total_user_tasks else 0)
+        percent_overdue = (len(overdue_tasks) / total_user_tasks * 100
+                           if total_user_tasks else 0)
 
         lines.append(f"User: {username}")
         lines.append(f"  Total tasks assigned: {total_user_tasks}")
-        lines.append(f"  % of total tasks: {percent_total_tasks:.2f}%")
+        lines.append(f"  % of total tasks: {percent_total:.2f}%")
         lines.append(f"  % completed: {percent_completed:.2f}%")
         lines.append(f"  % uncompleted: {percent_uncompleted:.2f}%")
         lines.append(f"  % overdue: {percent_overdue:.2f}%")
-        lines.append("")  # blank line for readability
+        lines.append("")
 
     return lines
 
 
 def generate_user_report(filename="user_overview.txt"):
-    """Write user statistics to a file, creating it if missing."""
+    """Write user statistics to a file."""
     lines = calculate_user_overview()
-    try:
-        with open(filename, "w") as f:
-            for line in lines:
-                f.write(line + "\n")
-        print(f"User report successfully written to '{filename}'.")
-    except Exception as e:
-        print(f"Error writing to '{filename}': {e}")
+    with open(filename, "w") as f:
+        for line in lines:
+            f.write(line + "\n")
 
 
 def display_user_overview(filename="user_overview.txt"):
-    """Display user statistics on screen. Generate report if file missing."""
+    """Display user statistics on screen. Generate report if missing."""
     try:
         with open(filename, "r") as f:
             lines = [line.strip() for line in f.readlines()]
@@ -475,8 +474,7 @@ def display_user_overview(filename="user_overview.txt"):
         generate_user_report(filename)
         display_user_overview(filename)
 
-        
-        
+
 # ==== Main menu loop ====
 while True:
     if matched_user["username"].strip().lower() == "admin":
@@ -488,7 +486,7 @@ va - view all tasks
 vm - view my tasks
 vc - view completed tasks
 del - delete tasks
-ds  - display statistics
+ds - display statistics
 gr - generate reports
 e - exit
 : '''
@@ -503,30 +501,28 @@ e - exit
 : '''
         ).lower()
 
-    if menu == 'r':
+    if menu == "r":
         reg_user()
-    elif menu == 'a':
+    elif menu == "a":
         add_task()
-    elif menu == 'va':
+    elif menu == "va":
         view_all()
-    elif menu == 'vm':
+    elif menu == "vm":
         view_mine()
-    elif menu == 'vc':
+    elif menu == "vc":
         view_completed()
-    elif menu == 'ds':
+    elif menu == "ds":
         display_task_overview()
         display_user_overview()
-    elif menu == 'del':
+    elif menu == "del":
         delete_task()
-    elif menu == 'gr':
+    elif menu == "gr":
         generate_task_report()
         print("Task Report has been generated")
         generate_user_report()
         print("User Overview Report has been generated")
-
-        
-    elif menu == 'e':
-        print('Goodbye!!!')
+    elif menu == "e":
+        print("Goodbye!!!")
         sys.exit()
     else:
         print("You have entered an invalid input. Please try again")
