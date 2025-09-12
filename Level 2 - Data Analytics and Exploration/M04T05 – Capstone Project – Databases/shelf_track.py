@@ -192,6 +192,26 @@ class BookManager:
                 print("-"*50)
         else:
             print("No books to view.")
+            
+            
+            # --- DELETE BOOK ---
+    def delete_book(self):
+        book_id = self.get_valid_id("Enter the ID of the book to delete: ")
+        # Check if book exists
+        self.db.execute("SELECT title FROM book WHERE id = ?", (book_id,))
+        book = self.db.fetchone()
+        if not book:
+            print("Book not found.")
+            return
+        
+        confirm = input(f"Are you sure you want to delete '{book[0]}'? (yes/no): ").lower()
+        if confirm == "yes":
+            self.db.execute("DELETE FROM book WHERE id = ?", (book_id,))
+            self.db.commit()
+            print("Book deleted successfully.")
+        else:
+            print("Deletion cancelled.")
+
 
     # --- UTILITY FUNCTIONS ---
     def get_valid_id(self, prompt):
@@ -246,6 +266,7 @@ def main():
             "\nSelect one of the following options:\n"
             "a  - add book\n"
             "up - update book\n"
+            "del - delete book\n"
             "s  - search book\n"
             "v  - view details of all books\n"
             "e  - exit\n: "
@@ -255,6 +276,8 @@ def main():
             manager.add_book()
         elif menu == "up":
             manager.update_book()
+        elif menu == "del":
+            manager.delete_book()
         elif menu == "s":
             manager.search_book()
         elif menu == "v":
