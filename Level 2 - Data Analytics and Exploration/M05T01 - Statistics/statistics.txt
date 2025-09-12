@@ -11,3 +11,11 @@ be budgeted for.
 d. You work in healthcare insurance. You are asked to provide an estimate of the typical amount of money spent on healthcare. 
 This is taking into account the fact that there are a few people who spend a large amount of money on medical healthcare due to major issues. - Median. 
 We don't want to use mean here, since the few people with very high costs would skew the results.
+
+2. State whether you would use variance or standard deviation to inform the following decisions:
+a. You are choosing a new Internet provider. You fi nd two providers with the same mean speed, 
+but you want to have a more stable connection. You get a list of all reported speeds over the last month and are trying to fi nd the provider 
+that doesn’t move too much from the mean value. - Variance because we want to compare the spread mathematically between two providers.
+b. You are going on holiday to Mauritius. You need to fi nd a shuttle from the airport to your hotel, 
+but you are worried about being overcharged or undercharged (being undercharged might mean that you get unreliable transport). 
+You get a list of all available shuttle service prices and need to fi nd out which services, if any, are overcharging or undercharging. - Standard Deviation  is better here because it’s in the same units as the data and see how much prices deviate in actual dollars to identify outliers.
