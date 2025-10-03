@@ -4,40 +4,27 @@ Created on Fri Oct  3 13:48:27 2025
 
 @author: juleigar
 """
-try:
-    coefficient = int(input("Enter coefficient: "))
-    power_n = int(input("Enter the power to raise: "))
-    x = int(input("Enter the x-coordinate of the point where you would like to calculate the gradient: "))
 
-    # derivative calculation
-    derivative_coeff = coefficient * power_n
-    derivative_power = power_n - 1
-    gradient = derivative_coeff * (x ** derivative_power)
+def main():
+    try:
+        # Get user input
+        coefficient = int(input("Enter coefficient of x: "))
+        power_n = int(input("Enter the power to raise x: "))
+        x = int(input("Enter the x-coordinate of the point where you would like to calculate the gradient: "))
 
-    # format derivative nicely (e.g. 6x^2)
-    if derivative_power == 0:
-        derivative_str = f"{derivative_coeff}"
-    elif derivative_power == 1:
-        derivative_str = f"{derivative_coeff}x"
-    else:
-        derivative_str = f"{derivative_coeff}x^{derivative_power}"
+        # Apply power rule: derivative = (coefficient * power) * x^(power-1)
+        derivative_coeff = coefficient * power_n
+        derivative_power = power_n - 1
 
-    # polynomial string
-    if power_n == 0:
-        poly_str = f"{coefficient}"
-    elif power_n == 1:
-        poly_str = f"{coefficient}x"
-    else:
-        poly_str = f"{coefficient}x^{power_n}"
+        # Gradient at the given x
+        gradient = derivative_coeff * (x ** derivative_power)
 
-    print(
-        f"The derivative of the polynomial {poly_str} is {derivative_str}. "
-        f"The gradient at the point x = {x} is {gradient}."
-    )
+        # Output
+        print(f"The derivative of the polynomial {coefficient}x^{power_n} is {derivative_coeff}x^{derivative_power}.")
+        print(f"The gradient at the point x = {x} is {gradient}.")
 
-except ValueError:
-    print("Invalid input! Please enter integers only.")
-except ZeroDivisionError:
-    print("Error: Division by zero occurred (check negative powers at x=0).")
-except Exception as e:
-    print("An unexpected error occurred:", e)
+    except ValueError:
+        print("Error: Please enter valid integers for coefficient, power, and x.")
+
+if __name__ == "__main__":
+    main()
