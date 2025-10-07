@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 """
 Created on Sat Oct  4 09:11:29 2025
 
@@ -23,8 +23,13 @@ Task 1
 
 Plot f(x) = P.X, where p is your params
 """
-y =params[0] * X + params[1]
-plt.plot(X, y, color = 'blue')
-plt.title("f(y) = 2x - 5")
+y = params[0] * X + params[1]
+plt.plot(X, y, color='blue')
+
+# Dynamically format the equation based on the sign of params[1]
+sign = '+' if params[1] >= 0 else '-'
+plt.title(f"f(x) = {params[0]:.1f}x {sign} {abs(params[1]):.1f}")
 plt.xlabel("X")
 plt.ylabel("y")
+
+plt.show()
