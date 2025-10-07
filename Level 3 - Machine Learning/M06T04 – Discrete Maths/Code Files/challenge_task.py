@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Oct  7 08:06:19 2025
+
+@author: juleigar
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -16,10 +23,19 @@ Optional Task
 
 Plot f(x) = P.X, where p is your params
 """
-y = params[0] * X**3 + params[1] * X**2 + params[2] * X + (params[3])
-
+y = params[0] * X**3 + params[1] * X**2 + params[2] * X + params[3]
 plt.plot(X, y, color="blue")
-plt.title(f"f(x) = {params[0]}x³ + {params[1]}x² + {params[2]}x - {abs(params[3])}")
+
+# Format the equation dynamically with correct signs
+sign2 = '+' if params[1] >= 0 else '-'
+sign3 = '+' if params[2] >= 0 else '-'
+sign4 = '+' if params[3] >= 0 else '-'
+
+plt.title(
+    f"f(x) = {params[0]:.1f}x³ {sign2} {abs(params[1]):.1f}x² "
+    f"{sign3} {abs(params[2]):.1f}x {sign4} {abs(params[3]):.1f}"
+)
+
 plt.ylabel("y")
 plt.xlabel("X")
 plt.grid(True)
