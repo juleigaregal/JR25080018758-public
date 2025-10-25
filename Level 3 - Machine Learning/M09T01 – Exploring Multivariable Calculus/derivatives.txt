@@ -1,0 +1,3 @@
+Ordinary derivatives measure change in single-variable functions.
+
+Partial derivatives measure change in multivariable functions by focusing on one variable at a time while holding the others fixed.
