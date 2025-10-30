@@ -72,35 +72,25 @@ def most_similar_movie(description, movie_list):
 
     return best_movie, max_similarity
 
-# --- 5️⃣ Run and print result ---
+# --- Run and print result ---
 if __name__ == "__main__":
     recommended_movie, similarity_score = most_similar_movie(planet_hulk_desc, movies)
     print(f"Recommended movie: {recommended_movie}")
     print(f"Similarity score: {similarity_score:.3f}")
 
 # =====================================================
-# Notes and Explanation (Juleiga Regal)
+# Notes 
 # =====================================================
 """
-SpaCy’s medium model (en_core_web_md) uses word vectors to identify semantic
-similarity between texts. It compares the meaning of words rather than just
-their literal text.
+SpaCy’s medium model (en_core_web_md) uses word vectors and looks for semantic content.
 
-Even though the movie plots might differ (for example, a WWII story vs. Planet Hulk),
-SpaCy finds similarity through shared **themes and vocabulary** — such as:
-    - action
-    - conflict
-    - danger
-    - survival
+Even though the movie plot is very different (WWII story vs. Planet Hulk), SpaCy is likely picking up on:
 
-Terms like “soldier”, “fighting”, “monstrous”, or “dangerous” are semantically
-related to words in the Hulk description like “gladiator”, “planet”, or “dangerous”.
+Words associated with action, conflict, danger, or survival (“soldier fighting for survival”, “monstrous identity”, etc.)
 
-✅ Key Insight:
-SpaCy does **not** understand story logic or plot structure.
-It only measures how close the meanings of words and phrases are in a
-multi-dimensional vector space.
+Certain common terms like “soldier”, “monstrous”, or “dangerous” may have high vector similarity to “Hulk”, “gladiator”, “planet”, “dangerous”, etc.
 
-Therefore, the recommendation may appear logical in terms of word similarity,
-even if the movie stories are unrelated from a human perspective.
+SpaCy is not reading plot logic, only semantic closeness of words.
+
+SpaCy’s model captures general similarity of words and concepts, but it doesn’t understand context like humans do.
 """
